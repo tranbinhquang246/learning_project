@@ -3,10 +3,12 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const route = useRouter();
   return (
     <>
       <Head>
@@ -18,8 +20,8 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.description}>
           <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
+            Click logo below to&nbsp;
+            <code className={styles.code}>login page</code>
           </p>
           <div>
             <a
@@ -42,6 +44,9 @@ export default function Home() {
 
         <div className={styles.center}>
           <Image
+            onClick={() => {
+              route.push("/authentication/login");
+            }}
             className={styles.logo}
             src="/next.svg"
             alt="Next.js Logo"
@@ -64,7 +69,7 @@ export default function Home() {
           <Link href="/products">
             Click here! <span>-&gt;</span>
             <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
+              Hoặc click ở đây để đi qua trang product
             </p>
           </Link>
 

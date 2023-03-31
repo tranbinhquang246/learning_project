@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Input from "@/components/input";
 import Button from "@/components/button";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import Input from "@/components/input";
 interface LoginForm {
   email: string;
   password: string;
@@ -26,6 +27,11 @@ const LoginPage = () => {
   } = useForm<LoginForm>({
     resolver: yupResolver(schema),
   });
+  const router = useRouter();
+  const { status } = useSession();
+  useEffect(() => {
+    if (status === "authenticated") router.push("/protect-swr");
+  }, [status]);
 
   const onSubmit = async (data: LoginForm) => {
     const res = await signIn("credentials", {
@@ -35,6 +41,9 @@ const LoginPage = () => {
     });
     console.log(res);
   };
+  if (status !== "unauthenticated") {
+    return <div>Loading......</div>;
+  }
 
   return (
     <div className="flex flex-col w-screen h-screen items-center justify-center font-medium bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200">
